@@ -8,9 +8,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.test.annotation.DirtiesContext;
 
+import com.jpmc.midascore.repository.UserRepository;
+
 @SpringBootTest
 @DirtiesContext
-@EmbeddedKafka(partitions = 1, brokerProperties = {"listeners=PLAINTEXT://localhost:9092", "port=9092"})
+@EmbeddedKafka(partitions = 1, brokerProperties = { "listeners=PLAINTEXT://localhost:9092", "port=9092" })
 public class TaskFourTests {
     static final Logger logger = LoggerFactory.getLogger(TaskFourTests.class);
 
@@ -23,6 +25,10 @@ public class TaskFourTests {
     @Autowired
     private FileLoader fileLoader;
 
+    // 1. Inject the repository into the test
+    @Autowired
+    private UserRepository userRepository;
+
     @Test
     void task_four_verifier() throws InterruptedException {
         userPopulator.populate();
@@ -32,7 +38,6 @@ public class TaskFourTests {
         }
         Thread.sleep(2000);
 
-
         logger.info("----------------------------------------------------------");
         logger.info("----------------------------------------------------------");
         logger.info("----------------------------------------------------------");
@@ -41,6 +46,7 @@ public class TaskFourTests {
         while (true) {
             Thread.sleep(20000);
             logger.info("...");
+            System.out.println(userRepository.findAll());
         }
     }
 }

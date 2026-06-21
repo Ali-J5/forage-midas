@@ -1,11 +1,18 @@
 general:
   kafka-topic: trader-updates
 
-  spring:
+spring:
   kafka:
     producer:
+      #Used by a Producer. It translates a Java Object out into raw JSON bytes so it can be sent over the network to a Kafka topic.
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
     consumer:
+      # "When you pull raw bytes from Kafka, assume it is JSON format and try to turn it into a Java object."
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      auto-offset-reset: earliest
       properties:
+        # explicitly telling Spring it is safe to instantiate objects from the JSON payload into your application's classes.
         spring.json.trusted.packages: "*"
+
+server:
+  port: 33400
